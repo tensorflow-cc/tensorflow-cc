@@ -31,7 +31,7 @@ arch:
     - sudo mkdir -p /run/user/1000
     - sudo chown 1000 /run/user/1000
     # build
-    - unset CC &&
+    - unset CC && unset JAVA_HOME &&
       export TARGET_DIR=ci/targets/$TARGET &&
       sh $TARGET_DIR/build.sh
 
