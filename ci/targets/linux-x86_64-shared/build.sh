@@ -74,6 +74,9 @@ yaourt -S bazel python2-numpy python2-pip python2-wheel python2-six --m-arg "--s
 
 git clone --depth=1 https://github.com/tensorflow/tensorflow.git
 
+sudo rm /usr/bin/python
+sudo ln -s /usr/bin/python2 /usr/bin/python
+
 # build
 echo building...
 build_tensorflow
