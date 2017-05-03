@@ -1,0 +1,48 @@
+sudo: required
+
+env:
+  global:
+    - ARCH_TRAVIS_CLEAN_CHROOT=1
+    - MAKEFLAGS=-j2
+  matrix:
+    - TARGET=linux-x86_64-shared
+    # - TARGET=windows-i686-static
+    # - TARGET=windows-x86_64-static
+    # - TARGET=linux-armv7-static
+    # - TARGET=linux-aarch64-static
+
+language: c
+
+compiler:
+  - gcc
+
+script:
+  # begin time-consuming jobs
+  - while true; do echo still working...; sleep 120; done &
+  - bash ./ci/arch-travis.sh
+
+# Arch Linux
+arch:
+  repos:
+    - archlinuxfr=http://repo.archlinux.fr/$arch
+  packages:
+    yaourt
+  script:
+    - sudo mkdir -p /run/user/1000
+    - sudo chown 1000 /run/user/1000
+    # build
+    - unset CC &&
+      export TARGET_DIR=ci/targets/$TARGET &&
+      sh $TARGET_DIR/build.sh
+
+before_deploy:
+  - sh ci/before_deploy.sh
+
+deploy:
+  provider: releases
+  api_key:
+    secure: bdbd3Q0WulXW9Kc2lpJ2tgUrmY+K1a2CB4xbxHJusufZ21H+PVftugBQS2+pKeHBzmHCyvnV6RxD4Ye1mmB9MYxMdmfkXOQhNaXyoQnStfbLNXTQ1HRxK0n14LUX2Kb/1JDssNdOEmUE5VCw09htFDEIlJE/l01ZuClJmk4eWo6TF5XelIsiuOkX6kXMO8/g6pQCBjCpy5abgiu2N7W0vm+C5QB3mnnhh1Mek8dVbixgCz9GNG2lk8toHA1Ze9ji2fc2JChyD5kvaV6SW7TtZS3eJfn6wnOHNrcQ2UojdKJmQfWsqKV0Y06gy83QLrLRL9DBNpQ1WJ19/hnCN0eI1ZPcak40lezM7k/Y9pQARgZsJgdK8VkuxpbecbwbynVekg4zcXf31ccWYKuCRlFvYan3ND6JWKVVqVCL1maaR05hP00d2EhpV1VbW3xK/PPuiLpDGtVG3U3kITxo9Pp4fzTOy8QlFDlP9rb/pYy0KWmVqftotVxAt1Y/1mmJUGmlId2DGBnGfkI2ul6bs5adpGCFjiAOqd5ZmyHOrumnscwysplvLyxUrGO9YyOSHR1SY6N0909w7ulAPYWzSM+3Y7mPXZHqjVjp/lmIFAML8K4fr+5gwDYrvt7D1SbN+n2Pc1qEk+vJYWwMCZi3dn8Ov3mgdYvcRDO9tQQVO2y08DU=
+  file: $(basename $TRAVIS_BUILD_DIR)-$TRAVIS_TAG-$TARGET.tar.gz
+  skip_cleanup: true
+  on:
+    tags: true
