@@ -68,7 +68,7 @@ retrieve_files_from_genfiles() {
 cd
 mkdir -p root
 
-pacaur -S bazel python2-numpy python2-pip python2-wheel python2-six --noconfirm --noedit --silent
+yaourt -S bazel python2-numpy python2-pip python2-wheel python2-six --m-arg "--skippgpcheck" --noconfirm > /dev/null
 git clone --depth=1 https://github.com/tensorflow/tensorflow.git
 
 # build
