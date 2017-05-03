@@ -69,6 +69,8 @@ cd
 mkdir -p root
 
 yaourt -S bazel jdk8-openjdk python2-numpy python2-pip python2-wheel python2-six unzip --m-arg "--skippgpcheck" --noconfirm > /dev/null
+source /etc/profile
+
 git clone --depth=1 https://github.com/tensorflow/tensorflow.git
 
 # build
