@@ -69,6 +69,7 @@ cd
 mkdir -p root
 
 pacaur -S jdk8-openjdk unzip --noconfirm --noedit --silent
+sudo archlinux-java set java-8-openjdk
 source /etc/profile
 yaourt -S bazel python2-numpy python2-pip python2-wheel python2-six --m-arg "--skippgpcheck" --noconfirm > /dev/null
 
